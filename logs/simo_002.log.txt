@@ -1,0 +1,26 @@
+[2025-05-13 23:37:10] ACTION: send
+Payload: [{'Cif': '123456789012345678901234567890123456', 'TenToChuc': 'Công ty TNHH XYZ', 'SoGiayPhepThanhLap': '987654321012345', 'SoTaiKhoanToChuc': '09876543210987654321', 'TrangThaiTaiKhoan': 3, 'NghiNgo': 1, 'GhiChu': 'Thông tin hồ sơ không khớp với Cơ sở dữ liệu quốc gia về đăng ký doanh nghiệp.'}]
+Error: <am:fault xmlns:am="http://wso2.org/apimanager"><am:code>404</am:code><am:type>Status report</am:type><am:message>Runtime Error</am:message><am:description>No matching resource found for given API Request</am:description></am:fault>
+------------------------------------------------------------
+[2025-05-13 23:37:37] ACTION: send
+Payload: [{'Cif': '123456789012345678901234567890123456', 'TenToChuc': 'Công ty TNHH XYZ', 'SoGiayPhepThanhLap': '987654321012345', 'SoTaiKhoanToChuc': '09876543210987654321', 'TrangThaiTaiKhoan': 3, 'NghiNgo': 1, 'GhiChu': 'Thông tin hồ sơ không khớp với Cơ sở dữ liệu quốc gia về đăng ký doanh nghiệp.'}]
+Error: <am:fault xmlns:am="http://wso2.org/apimanager"><am:code>404</am:code><am:type>Status report</am:type><am:message>Runtime Error</am:message><am:description>No matching resource found for given API Request</am:description></am:fault>
+------------------------------------------------------------
+[2025-05-13 23:54:16] ACTION: send
+Payload: [{'Cif': '123456789012345678901234567890123456', 'TenToChuc': 'Công ty TNHH XYZ', 'SoGiayPhepThanhLap': '987654321012345', 'SoTaiKhoanToChuc': '09876543210987654321', 'TrangThaiTaiKhoan': 3, 'NghiNgo': 1, 'GhiChu': 'Thông tin hồ sơ không khớp với Cơ sở dữ liệu quốc gia về đăng ký doanh nghiệp.'}]
+Error: <am:fault xmlns:am="http://wso2.org/apimanager"><am:code>404</am:code><am:type>Status report</am:type><am:message>Runtime Error</am:message><am:description>No matching resource found for given API Request</am:description></am:fault>
+------------------------------------------------------------
+[2025-05-13 23:56:50] ACTION: send
+Payload: [
+  {
+    "Cif": "123456789012345678901234567890123456",
+    "TenToChuc": "Công ty TNHH XYZ",
+    "SoGiayPhepThanhLap": "987654321012345",
+    "SoTaiKhoanToChuc": "09876543210987654321",
+    "TrangThaiTaiKhoan": 3,
+    "NghiNgo": 1,
+    "GhiChu": "Thông tin hồ sơ không khớp với Cơ sở dữ liệu quốc gia về đăng ký doanh nghiệp."
+  }
+]
+Error: <am:fault xmlns:am="http://wso2.org/apimanager"><am:code>404</am:code><am:type>Status report</am:type><am:message>Runtime Error</am:message><am:description>No matching resource found for given API Request</am:description></am:fault>
+------------------------------------------------------------

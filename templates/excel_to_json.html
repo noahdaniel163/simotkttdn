@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main-content">
+    <div class="card">
+        <h2>Chuyển Excel sang JSON theo mã SIMO</h2>
+        <form method="post" enctype="multipart/form-data">
+            <label for="simo_code">Chọn mã SIMO:</label>
+            <select name="simo_code" id="simo_code" required>
+                {% for code in simo_codes %}
+                <option value="{{ code }}" {% if selected_simo==code %}selected{% endif %}>SIMO {{ code }}</option>
+                {% endfor %}
+            </select>
+            <label for="excel_file">Chọn file Excel:</label>
+            <input type="file" name="excel_file" id="excel_file" accept=".xlsx,.xls" required />
+            <div class="actions">
+                <button type="submit">Chuyển đổi sang JSON</button>
+            </div>
+        </form>
+        {% if json_data_str %}
+        <h3>Kết quả JSON:</h3>
+        <textarea readonly style="min-height:220px">{{ json_data_str }}</textarea>
+        {% if json_download %}
+        <div style="margin-top:12px">
+            <a href="/download-json/{{ json_download }}" download>
+                <button type="button">Tải file JSON</button>
+            </a>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

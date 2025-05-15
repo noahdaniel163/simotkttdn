@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main-content">
+    <div class="card custom-theme">
+        <h2 class="title">Log dữ liệu SIMO</h2>
+        <form method="get" action="/logs">
+            <div class="form-row">
+                <label for="simo_code">Chọn mã SIMO:</label>
+                <select name="simo_code" id="simo_code" required onchange="this.form.submit()">
+                    <option value="001">SIMO 001</option>
+                    <option value="002">SIMO 002</option>
+                    <option value="003">SIMO 003</option>
+                    <option value="004">SIMO 004</option>
+                </select>
+            </div>
+        </form>
+        {% if log_content %}
+        <div class="result" style="margin-top:20px;">
+            <b>Nội dung log:</b><br>
+            <div style="color:#888;font-size:0.98em;margin-bottom:6px;">Đang xem log từ file: <b>logs/simo_{{ selected_simo }}.log.txt</b></div>
+            <pre style="max-height:400px;overflow:auto;background:#f8f8f8;border:1px solid #ccc;padding:10px;color:#e91e63;">{{ log_content }}</pre>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<style>
+.custom-theme {
+    background: linear-gradient(135deg, #232526 0%, #1b5e20 100%);
+    color: #e6ffe6;
+    border-radius: 20px;
+    box-shadow: 0 6px 32px #0008;
+    padding: 40px 36px 32px 36px;
+    max-width: 700px;
+    margin: 36px auto 0 auto;
+    border: 2px solid #43ff43;
+    animation: fadeIn 0.7s;
+}
+.title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+    color: #43ff43;
+    text-shadow: 0 2px 8px #0006;
+}
+.form-row {
+    margin-bottom: 18px;
+}
+.actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+select, textarea, input[type="file"] {
+    width: 100%;
+    margin-bottom: 0;
+    padding: 10px 12px;
+    border: 1.5px solid #43ff43;
+    border-radius: 7px;
+    font-size: 1.08rem;
+    background: #232526;
+    color: #e6ffe6;
+    transition: border 0.2s, background 0.3s, color 0.3s;
+}
+select:focus, textarea:focus {
+    border: 2px solid #43ff43;
+    outline: none;
+}
+textarea {
+    min-height: 170px;
+    font-family: 'Fira Mono', 'Consolas', monospace;
+    resize: vertical;
+}
+.sample-btn {
+    background: #43ff43;
+    color: #1b5e20;
+    border: none;
+    border-radius: 7px;
+    padding: 10px 22px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #0002;
+    transition: background 0.2s, color 0.2s;
+}
+.sample-btn:hover {
+    background: #2ecc40;
+    color: #fff;
+}
+.submit-btn {
+    background: linear-gradient(90deg, #43ff43 60%, #1b5e20 100%);
+    color: #232526;
+    border: none;
+    border-radius: 7px;
+    padding: 12px 32px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 12px #43ff4340;
+    transition: background 0.2s, color 0.2s;
+}
+.submit-btn:hover {
+    background: #43ff43;
+    color: #1b5e20;
+}
+.result, .error {
+    margin-top: 28px;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 1.08rem;
+    word-break: break-all;
+    box-shadow: 0 2px 8px #0002;
+}
+.result {
+    background: #1e2d1e;
+    border: 1.5px solid #43ff43;
+    color: #b6ffb6;
+}
+.error {
+    background: #3a2323;
+    border: 1.5px solid #b30000;
+    color: #ffb6b6;
+}
+@media (max-width: 700px) {
+    .custom-theme { padding: 18px 3vw 14px 3vw; }
+    .title { font-size: 1.2rem; }
+}
+</style>
+{% endblock %}

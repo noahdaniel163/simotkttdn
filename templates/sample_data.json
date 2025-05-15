@@ -1,0 +1,68 @@
+{
+  "001": [
+    {
+      "Cif": "123456789012345678901234567890123456",
+      "TenToChuc": "Công ty TNHH ABC",
+      "SoGiayPhepThanhLap": "123456789012345",
+      "LoaiGiayToThanhLapToChuc": 1,
+      "NgayThanhLap": "01/01/2020",
+      "DiaChiToChuc": "123 Đường Láng, Đống Đa, Hà Nội",
+      "HoTenNguoiDaiDien": "Nguyễn Văn A",
+      "SoGiayToTuyThan": "123456789012",
+      "LoaiGiayToTuyThan": 1,
+      "NgaySinh": "15/05/1980",
+      "GioiTinh": 1,
+      "QuocTich": "Việt Nam",
+      "DienThoai": "0987654321",
+      "SoTaiKhoanToChuc": "12345678901234567890",
+      "NgayMoTaiKhoan": "01/02/2021",
+      "TrangThaiTaiKhoan": 1,
+      "DiaChiMAC": "001A2B3C4D5E",
+      "SO_IMEI": "123456789012345"
+    }
+  ],
+  "002": [
+    {
+      "Cif": "123456789012345678901234567890123456",
+      "TenToChuc": "Công ty TNHH XYZ",
+      "SoGiayPhepThanhLap": "987654321012345",
+      "SoTaiKhoanToChuc": "09876543210987654321",
+      "TrangThaiTaiKhoan": 3,
+      "NghiNgo": 1,
+      "GhiChu": "Thông tin hồ sơ không khớp với Cơ sở dữ liệu quốc gia về đăng ký doanh nghiệp."
+    }
+  ],
+  "003": [
+    {
+      "Cif": "123456789012345678901234567890123456",
+      "TenToChuc": "Công ty TNHH XYZ",
+      "SoGiayPhepThanhLap": "987654321012345",
+      "SoTaiKhoanToChuc": "09876543210987654321",
+      "TrangThaiTaiKhoan": 4,
+      "NghiNgo": 2,
+      "LyDoCapNhat": "Cập nhật trạng thái tài khoản do phát hiện hoạt động giao dịch bất thường."
+    }
+  ],
+  "004": [
+    {
+      "Cif": "123456789012345678901234567890123456",
+      "TenToChuc": "Công ty TNHH ABC",
+      "SoGiayPhepThanhLap": "123456789012345",
+      "LoaiGiayToThanhLapToChuc": 1,
+      "NgayThanhLap": "01/01/2020",
+      "DiaChiToChuc": "123 Đường Láng, Đống Đa, Hà Nội",
+      "HoTenNguoiDaiDien": "Nguyễn Văn A",
+      "SoGiayToTuyThan": "123456789012",
+      "LoaiGiayToTuyThan": 1,
+      "NgaySinh": "15/05/1980",
+      "GioiTinh": 1,
+      "QuocTich": "Việt Nam",
+      "DienThoai": "0987654321",
+      "SoTaiKhoanToChuc": "12345678901234567890",
+      "NgayMoTaiKhoan": "01/02/2021",
+      "TrangThaiTaiKhoan": 1,
+      "DiaChiMAC": "001A2B3C4D5E",
+      "SO_IMEI": "123456789012345"
+    }
+  ]
+}

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>SIMO KHDN - Quản lý & Giám sát rủi ro thanh toán</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#1b5e20">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle fill='%231b5e20' cx='50' cy='50' r='50'/><text x='50%' y='60%' font-size='50' text-anchor='middle' fill='white' font-family='Arial' dy='.3em'>S</text></svg>">
+    <style>
+        :root {
+            --primary: #1b5e20;
+            --primary-dark: #003300;
+            --accent: #43ff43;
+            --danger: #b30000;
+            --bg-dark: #101613;
+            --surface: #1a2420;
+            --surface-light: #222b25;
+            --text: #e6ffe6;
+            --text-light: #fff;
+            --border: #2e4d3a;
+            --border-dark: #1b2d22;
+            --shadow: 0 4px 32px #0006;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: linear-gradient(90deg, #1b5e20 60%, #43ff43 100%);
+            color: var(--text-light);
+            padding: 32px 0 18px 0;
+            text-align: center;
+            box-shadow: 0 2px 12px #0004;
+            border-bottom-left-radius: 32px;
+            border-bottom-right-radius: 32px;
+        }
+        .header h1 {
+            margin: 0 0 8px 0;
+            font-size: 2.3rem;
+            letter-spacing: 1px;
+            font-weight: 800;
+            text-shadow: 0 2px 8px #0006;
+        }
+        .header .subtitle {
+            font-size: 1.13rem;
+            font-weight: 400;
+            opacity: 0.97;
+            margin-bottom: 8px;
+        }
+        .main-menu {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+        .main-menu a {
+            color: #fff;
+            background: #1b5e20;
+            padding: 7px 18px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s, color 0.2s;
+        }
+        .main-menu a:hover {
+            background: #43ff43;
+            color: #1b5e20;
+        }
+        .main-content {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: -30px;
+        }
+        .card {
+            background: var(--surface);
+            color: var(--text);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 36px 32px 28px 32px;
+            max-width: 650px;
+            width: 100%;
+            margin-bottom: 32px;
+            margin-top: 24px;
+            animation: fadeIn 0.7s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: none; }
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+            letter-spacing: 0.5px;
+        }
+        select, textarea, input[type="file"] {
+            width: 100%;
+            margin-bottom: 18px;
+            padding: 10px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: 7px;
+            font-size: 1.05rem;
+            background: var(--surface-light);
+            color: var(--text);
+            transition: border 0.2s, background 0.3s, color 0.3s;
+        }
+        select:focus, textarea:focus {
+            border: 2px solid var(--accent);
+            outline: none;
+        }
+        textarea {
+            min-height: 170px;
+            font-family: 'Fira Mono', 'Consolas', monospace;
+            resize: vertical;
+        }
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        button[type="submit"], button[type="button"] {
+            background: var(--accent);
+            color: #003300;
+            border: none;
+            border-radius: 7px;
+            padding: 11px 28px;
+            font-size: 1.08rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px #0002;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        button[type="button"] {
+            background: #222b25;
+            color: var(--accent);
+            border: 1.5px solid var(--border);
+        }
+        button[type="submit"]:hover {
+            background: #43ff43;
+            color: #003300;
+            box-shadow: 0 4px 16px #43ff4340;
+        }
+        button[type="button"]:hover {
+            background: #1a2420;
+        }
+        .result, .error {
+            margin-top: 24px;
+            padding: 18px;
+            border-radius: 9px;
+            font-size: 1.05rem;
+            word-break: break-all;
+            box-shadow: 0 2px 8px #0002;
+        }
+        .result {
+            background: #1e2d1e;
+            border: 1.5px solid var(--accent);
+            color: #b6ffb6;
+        }
+        .error {
+            background: #3a2323;
+            border: 1.5px solid var(--danger);
+            color: #ffb6b6;
+        }
+        .footer {
+            text-align: center;
+            color: #6e8c7a;
+            font-size: 1.05rem;
+            margin: 40px 0 10px 0;
+            letter-spacing: 0.5px;
+        }
+        .endpoint-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 18px 0;
+        }
+        .endpoint-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 0;
+            border-bottom: 1px solid #2e4d3a44;
+        }
+        .endpoint-url {
+            font-size: 0.98rem;
+            color: #b6ffb6;
+            word-break: break-all;
+        }
+        .endpoint-status.ok {
+            color: #43ff43;
+            font-weight: 600;
+        }
+        .endpoint-status.fail {
+            color: #ffb6b6;
+            font-weight: 600;
+        }
+        @media (max-width: 700px) {
+            .main-content { margin-top: 0; }
+            .card { padding: 16px 3vw 12px 3vw; }
+            .header h1 { font-size: 1.2rem; }
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropbtn {
+            color: #fff;
+            background: #1b5e20;
+            padding: 7px 18px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s, color 0.2s;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #222b25;
+            min-width: 210px;
+            box-shadow: 0 8px 16px 0 #0003;
+            z-index: 1;
+            border-radius: 7px;
+            margin-top: 2px;
+        }
+        .dropdown-content a {
+            color: #fff;
+            padding: 10px 18px;
+            text-decoration: none;
+            display: block;
+            border-radius: 7px;
+            background: none;
+            font-weight: 500;
+        }
+        .dropdown-content a:hover {
+            background: #43ff43;
+            color: #1b5e20;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown:hover .dropbtn {
+            background: #43ff43;
+            color: #1b5e20;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>SIMO KHDN</h1>
+    <div class="subtitle">Hệ thống thông tin hỗ trợ quản lý, giám sát và phòng ngừa rủi ro gian lận trong hoạt động thanh toán khách hàng tổ chức</div>
+    <nav class="main-menu">
+        <a href="/">Trang chủ</a>
+        <a href="/logs">Log dữ liệu</a>
+        <div class="dropdown">
+            <a href="#" class="dropbtn">Xử lý Excel ▼</a>
+            <div class="dropdown-content">
+                <a href="/download-template">Tải file Excel mẫu</a>
+                <a href="/excel-to-json">Chuyển Excel sang JSON</a>
+            </div>
+        </div>
+    </nav>
+</div>
+{% block content %}{% endblock %}
+<div class="footer">
+    &copy; 2025 SIMO KHDN - Hệ thống thông tin hỗ trợ quản lý, giám sát và phòng ngừa rủi ro gian lận trong hoạt động thanh toán khách hàng tổ chức
+</div>
+</body>
+</html>

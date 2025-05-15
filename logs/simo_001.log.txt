@@ -1,0 +1,278 @@
+[2025-05-13 23:36:21] ACTION: send
+Payload: [{'Cif': '123456789012345678901234567890123456', 'TenToChuc': 'Công ty TNHH ABC', 'SoGiayPhepThanhLap': '123456789012345', 'LoaiGiayToThanhLapToChuc': 1, 'NgayThanhLap': '01/01/2020', 'DiaChiToChuc': '123 Đường Láng, Đống Đa, Hà Nội', 'HoTenNguoiDaiDien': 'Nguyễn Văn A', 'SoGiayToTuyThan': '123456789012', 'LoaiGiayToTuyThan': 1, 'NgaySinh': '15/05/1980', 'GioiTinh': 1, 'QuocTich': 'Việt Nam', 'DienThoai': '0987654321', 'SoTaiKhoanToChuc': '12345678901234567890', 'NgayMoTaiKhoan': '01/02/2021', 'TrangThaiTaiKhoan': 1, 'DiaChiMAC': '001A2B3C4D5E', 'SO_IMEI': '123456789012345'}]
+Response: {'code': '00', 'message': '', 'success': True, 'result': 'done'}
+------------------------------------------------------------
+[2025-05-13 23:37:41] ACTION: send
+Payload: [{'Cif': '123456789012345678901234567890123456', 'TenToChuc': 'Công ty TNHH ABC', 'SoGiayPhepThanhLap': '123456789012345', 'LoaiGiayToThanhLapToChuc': 1, 'NgayThanhLap': '01/01/2020', 'DiaChiToChuc': '123 Đường Láng, Đống Đa, Hà Nội', 'HoTenNguoiDaiDien': 'Nguyễn Văn A', 'SoGiayToTuyThan': '123456789012', 'LoaiGiayToTuyThan': 1, 'NgaySinh': '15/05/1980', 'GioiTinh': 1, 'QuocTich': 'Việt Nam', 'DienThoai': '0987654321', 'SoTaiKhoanToChuc': '12345678901234567890', 'NgayMoTaiKhoan': '01/02/2021', 'TrangThaiTaiKhoan': 1, 'DiaChiMAC': '001A2B3C4D5E', 'SO_IMEI': '123456789012345'}]
+Response: {'code': '00', 'message': '', 'success': True, 'result': 'done'}
+------------------------------------------------------------
+[2025-05-13 23:38:00] ACTION: send
+Payload: [{'Cif': '123456789012345678901234567890123456', 'TenToChuc': 'Công ty TNHH AAA', 'SoGiayPhepThanhLap': '123456789012345', 'LoaiGiayToThanhLapToChuc': 1, 'NgayThanhLap': '01/01/2020', 'DiaChiToChuc': '123 Đường Láng, Đống Đa, Hà Nội', 'HoTenNguoiDaiDien': 'Nguyễn Văn A', 'SoGiayToTuyThan': '123456789012', 'LoaiGiayToTuyThan': 1, 'NgaySinh': '15/05/1980', 'GioiTinh': 1, 'QuocTich': 'Việt Nam', 'DienThoai': '0987654321', 'SoTaiKhoanToChuc': '12345678901234567890', 'NgayMoTaiKhoan': '01/02/2021', 'TrangThaiTaiKhoan': 1, 'DiaChiMAC': '001A2B3C4D5E', 'SO_IMEI': '123456789012345'}]
+Response: {'code': '00', 'message': '', 'success': True, 'result': 'done'}
+------------------------------------------------------------
+[2025-05-13 23:38:29] ACTION: send
+Payload: [{'Cif': '123456789012345678901234567890123456', 'TenToChuc': 'Công ty TNHH AAA', 'SoGiayPhepThanhLap': '123456789012345', 'LoaiGiayToThanhLapToChuc': 1, 'NgayThanhLap': '01/01/2020', 'DiaChiToChuc': '123 Đường Láng, Đống Đa, Hà Nội', 'HoTenNguoiDaiDien': 'Nguyễn Văn A', 'SoGiayToTuyThan': '123456789012', 'LoaiGiayToTuyThan': 1, 'NgaySinh': '15/05/1980', 'GioiTinh': 1, 'QuocTich': 'Việt Nam', 'DienThoai': '0987654321', 'SoTaiKhoanToChuc': '12345678901234567890', 'NgayMoTaiKhoan': '01/02/2021', 'TrangThaiTaiKhoan': 1, 'DiaChiMAC': '001A2B3C4D5E', 'SO_IMEI': '123456789012345'}]
+Response: {'code': '00', 'message': '', 'success': True, 'result': 'done'}
+------------------------------------------------------------
+[2025-05-13 23:40:33] ACTION: send
+Payload: [{'Cif': '123456789012345678901234567890123456', 'TenToChuc': 'Công ty TNHH AAA', 'SoGiayPhepThanhLap': '123456789012345', 'LoaiGiayToThanhLapToChuc': 1, 'NgayThanhLap': '01/01/2020', 'DiaChiToChuc': '123 Đường Láng, Đống Đa, Hà Nội', 'HoTenNguoiDaiDien': 'Nguyễn Văn A', 'SoGiayToTuyThan': '123456789012', 'LoaiGiayToTuyThan': 1, 'NgaySinh': '15/05/1980', 'GioiTinh': 1, 'QuocTich': 'Việt Nam', 'DienThoai': '0987654321', 'SoTaiKhoanToChuc': '12345678901234567890', 'NgayMoTaiKhoan': '01/02/2021', 'TrangThaiTaiKhoan': 1, 'DiaChiMAC': '001A2B3C4D5E', 'SO_IMEI': '123456789012345'}]
+Response: {'code': '00', 'message': '', 'success': True, 'result': 'done'}
+------------------------------------------------------------
+[2025-05-13 23:53:55] ACTION: send
+Payload: [{'Cif': '123456789012345678901234567890123456', 'TenToChuc': 'Công ty TNHH ABC', 'SoGiayPhepThanhLap': '123456789012345', 'LoaiGiayToThanhLapToChuc': 1, 'NgayThanhLap': '01/01/2020', 'DiaChiToChuc': '123 Đường Láng, Đống Đa, Hà Nội', 'HoTenNguoiDaiDien': 'Nguyễn Văn A', 'SoGiayToTuyThan': '123456789012', 'LoaiGiayToTuyThan': 1, 'NgaySinh': '15/05/1980', 'GioiTinh': 1, 'QuocTich': 'Việt Nam', 'DienThoai': '0987654321', 'SoTaiKhoanToChuc': '12345678901234567890', 'NgayMoTaiKhoan': '01/02/2021', 'TrangThaiTaiKhoan': 1, 'DiaChiMAC': '001A2B3C4D5E', 'SO_IMEI': '123456789012345'}]
+Response: {'code': '00', 'message': '', 'success': True, 'result': 'done'}
+------------------------------------------------------------
+[2025-05-13 23:54:37] ACTION: send
+Payload: [{'Cif': '123456789012345678901234567890123456', 'TenToChuc': 'Công ty TNHH AAA', 'SoGiayPhepThanhLap': '123456789012345', 'LoaiGiayToThanhLapToChuc': 1, 'NgayThanhLap': '01/01/2020', 'DiaChiToChuc': '123 Đường Láng, Đống Đa, Hà Nội', 'HoTenNguoiDaiDien': 'Nguyễn Văn A', 'SoGiayToTuyThan': '123456789012', 'LoaiGiayToTuyThan': 1, 'NgaySinh': '15/05/1980', 'GioiTinh': 1, 'QuocTich': 'Việt Nam', 'DienThoai': '0987654321', 'SoTaiKhoanToChuc': '12345678901234567890', 'NgayMoTaiKhoan': '01/02/2021', 'TrangThaiTaiKhoan': 1, 'DiaChiMAC': '001A2B3C4D5E', 'SO_IMEI': '123456789012345'}]
+Response: {'code': '00', 'message': '', 'success': True, 'result': 'done'}
+------------------------------------------------------------
+[2025-05-13 23:56:41] ACTION: send
+Payload: [
+  {
+    "Cif": "123456789012345678901234567890123456",
+    "TenToChuc": "Công ty TNHH ABC",
+    "SoGiayPhepThanhLap": "123456789012345",
+    "LoaiGiayToThanhLapToChuc": 1,
+    "NgayThanhLap": "01/01/2020",
+    "DiaChiToChuc": "123 Đường Láng, Đống Đa, Hà Nội",
+    "HoTenNguoiDaiDien": "Nguyễn Văn A",
+    "SoGiayToTuyThan": "123456789012",
+    "LoaiGiayToTuyThan": 1,
+    "NgaySinh": "15/05/1980",
+    "GioiTinh": 1,
+    "QuocTich": "Việt Nam",
+    "DienThoai": "0987654321",
+    "SoTaiKhoanToChuc": "12345678901234567890",
+    "NgayMoTaiKhoan": "01/02/2021",
+    "TrangThaiTaiKhoan": 1,
+    "DiaChiMAC": "001A2B3C4D5E",
+    "SO_IMEI": "123456789012345"
+  }
+]
+Response: {
+  "code": "00",
+  "message": "",
+  "success": true,
+  "result": "done"
+}
+------------------------------------------------------------
+[2025-05-13 23:59:12] ACTION: send
+Payload: [
+  {
+    "Cif": "123456789012345678901234567890123456",
+    "TenToChuc": "Công ty TNHH ABC",
+    "SoGiayPhepThanhLap": "123456789012345",
+    "LoaiGiayToThanhLapToChuc": 1,
+    "NgayThanhLap": "01/01/2020",
+    "DiaChiToChuc": "123 Đường Láng, Đống Đa, Hà Nội",
+    "HoTenNguoiDaiDien": "Nguyễn Văn A",
+    "SoGiayToTuyThan": "123456789012",
+    "LoaiGiayToTuyThan": 1,
+    "NgaySinh": "15/05/1980",
+    "GioiTinh": 1,
+    "QuocTich": "Việt Nam",
+    "DienThoai": "0987654321",
+    "SoTaiKhoanToChuc": "12345678901234567890",
+    "NgayMoTaiKhoan": "01/02/2021",
+    "TrangThaiTaiKhoan": 1,
+    "DiaChiMAC": "001A2B3C4D5E",
+    "SO_IMEI": "123456789012345"
+  }
+]
+Response: {
+  "code": "00",
+  "message": "",
+  "success": true,
+  "result": "done"
+}
+------------------------------------------------------------
+[2025-05-14 00:00:17] ACTION: send
+Payload: [
+  {
+    "Cif": "123456789012345678901234567890123456",
+    "TenToChuc": "Công ty TNHH ABC",
+    "SoGiayPhepThanhLap": "123456789012345",
+    "LoaiGiayToThanhLapToChuc": 1,
+    "NgayThanhLap": "01/01/2020",
+    "DiaChiToChuc": "123 Đường Láng, Đống Đa, Hà Nội",
+    "HoTenNguoiDaiDien": "Nguyễn Văn A",
+    "SoGiayToTuyThan": "123456789012",
+    "LoaiGiayToTuyThan": 1,
+    "NgaySinh": "15/05/1980",
+    "GioiTinh": 1,
+    "QuocTich": "Việt Nam",
+    "DienThoai": "0987654321",
+    "SoTaiKhoanToChuc": "12345678901234567890",
+    "NgayMoTaiKhoan": "01/02/2021",
+    "TrangThaiTaiKhoan": 1,
+    "DiaChiMAC": "001A2B3C4D5E",
+    "SO_IMEI": "123456789012345"
+  }
+]
+Response: {
+  "code": "00",
+  "message": "",
+  "success": true,
+  "result": "done"
+}
+------------------------------------------------------------
+[2025-05-14 00:00:25] ACTION: send
+Payload: [
+  {
+    "Cif": "123456789012345678901234567890123456",
+    "TenToChuc": "Công ty TNHH ABC",
+    "SoGiayPhepThanhLap": "123456789012345",
+    "LoaiGiayToThanhLapToChuc": 1,
+    "NgayThanhLap": "01/01/2020",
+    "DiaChiToChuc": "123 Đường Láng, Đống Đa, Hà Nội",
+    "HoTenNguoiDaiDien": "Nguyễn Văn A",
+    "SoGiayToTuyThan": "123456789012",
+    "LoaiGiayToTuyThan": 1,
+    "NgaySinh": "15/05/1980",
+    "GioiTinh": 1,
+    "QuocTich": "Việt Nam",
+    "DienThoai": "0987654321",
+    "SoTaiKhoanToChuc": "12345678901234567890",
+    "NgayMoTaiKhoan": "01/02/2021",
+    "TrangThaiTaiKhoan": 1,
+    "DiaChiMAC": "001A2B3C4D5E",
+    "SO_IMEI": "123456789012345"
+  }
+]
+Response: {
+  "code": "00",
+  "message": "",
+  "success": true,
+  "result": "done"
+}
+------------------------------------------------------------
+[2025-05-14 00:01:39] ACTION: send
+Payload: [
+  {
+    "Cif": "123456789012345678901234567890123456",
+    "TenToChuc": "Công ty TNHH ABC",
+    "SoGiayPhepThanhLap": "123456789012345",
+    "LoaiGiayToThanhLapToChuc": 1,
+    "NgayThanhLap": "01/01/2020",
+    "DiaChiToChuc": "123 Đường Láng, Đống Đa, Hà Nội",
+    "HoTenNguoiDaiDien": "Nguyễn Văn A",
+    "SoGiayToTuyThan": "123456789012",
+    "LoaiGiayToTuyThan": 1,
+    "NgaySinh": "15/05/1980",
+    "GioiTinh": 1,
+    "QuocTich": "Việt Nam",
+    "DienThoai": "0987654321",
+    "SoTaiKhoanToChuc": "12345678901234567890",
+    "NgayMoTaiKhoan": "01/02/2021",
+    "TrangThaiTaiKhoan": 1,
+    "DiaChiMAC": "001A2B3C4D5E",
+    "SO_IMEI": "123456789012345"
+  }
+]
+Response: {
+  "code": "00",
+  "message": "",
+  "success": true,
+  "result": "done"
+}
+------------------------------------------------------------
+[2025-05-14 00:04:27] ACTION: send
+Payload: [
+  {
+    "Cif": "123456789012345678901234567890123456",
+    "TenToChuc": "Công ty TNHH ABC",
+    "SoGiayPhepThanhLap": "123456789012345",
+    "LoaiGiayToThanhLapToChuc": 1,
+    "NgayThanhLap": "01/01/2020",
+    "DiaChiToChuc": "123 Đường Láng, Đống Đa, Hà Nội",
+    "HoTenNguoiDaiDien": "Nguyễn Văn A",
+    "SoGiayToTuyThan": "123456789012",
+    "LoaiGiayToTuyThan": 1,
+    "NgaySinh": "15/05/1980",
+    "GioiTinh": 1,
+    "QuocTich": "Việt Nam",
+    "DienThoai": "0987654321",
+    "SoTaiKhoanToChuc": "12345678901234567890",
+    "NgayMoTaiKhoan": "01/02/2021",
+    "TrangThaiTaiKhoan": 1,
+    "DiaChiMAC": "001A2B3C4D5E",
+    "SO_IMEI": "123456789012345"
+  }
+]
+Response: {
+  "code": "00",
+  "message": "",
+  "success": true,
+  "result": "done"
+}
+------------------------------------------------------------
+[2025-05-14 00:06:02] ACTION: send
+Payload: [
+  {
+    "Cif": "123456789012345678901234567890123456",
+    "TenToChuc": "Công ty TNHH ABC",
+    "SoGiayPhepThanhLap": "123456789012345",
+    "LoaiGiayToThanhLapToChuc": 1,
+    "NgayThanhLap": "01/01/2020",
+    "DiaChiToChuc": "123 Đường Láng, Đống Đa, Hà Nội",
+    "HoTenNguoiDaiDien": "Nguyễn Văn A",
+    "SoGiayToTuyThan": "123456789012",
+    "LoaiGiayToTuyThan": 1,
+    "NgaySinh": "15/05/1980",
+    "GioiTinh": 1,
+    "QuocTich": "Việt Nam",
+    "DienThoai": "0987654321",
+    "SoTaiKhoanToChuc": "12345678901234567890",
+    "NgayMoTaiKhoan": "01/02/2021",
+    "TrangThaiTaiKhoan": 1,
+    "DiaChiMAC": "001A2B3C4D5E",
+    "SO_IMEI": "123456789012345"
+  }
+]
+Response: {
+  "code": "00",
+  "message": "",
+  "success": true,
+  "result": "done"
+}
+------------------------------------------------------------
+[2025-05-14 10:19:24] ACTION: send
+Payload: [
+  {
+    "Cif": "123456789012345678901234567890123456",
+    "TenToChuc": "Công ty TNHH ABC",
+    "SoGiayPhepThanhLap": "123456789012345",
+    "LoaiGiayToThanhLapToChuc": 1,
+    "NgayThanhLap": "01/01/2020",
+    "DiaChiToChuc": "123 Đường Láng, Đống Đa, Hà Nội",
+    "HoTenNguoiDaiDien": "Nguyễn Văn A",
+    "SoGiayToTuyThan": "123456789012",
+    "LoaiGiayToTuyThan": 1,
+    "NgaySinh": "15/05/1980",
+    "GioiTinh": 1,
+    "QuocTich": "Việt Nam",
+    "DienThoai": "0987654321",
+    "SoTaiKhoanToChuc": "12345678901234567890",
+    "NgayMoTaiKhoan": "01/02/2021",
+    "TrangThaiTaiKhoan": 1,
+    "DiaChiMAC": "001A2B3C4D5E",
+    "SO_IMEI": "123456789012345"
+  }
+]
+Response Headers: {
+  "Access-Control-Expose-Headers": "",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST",
+  "Vary": "Access-Control-Request-Headers, Access-Control-Request-Method, Origin",
+  "Access-Control-Allow-Headers": "authorization,Access-Control-Allow-Origin,Content-Type,SOAPAction,apikey,testKey,Authorization",
+  "Content-Type": "application/json",
+  "Date": "Wed, 14 May 2025 03:10:36 GMT",
+  "Transfer-Encoding": "chunked"
+}
+Response: {
+  "code": "00",
+  "message": "",
+  "success": true,
+  "result": "done"
+}
+------------------------------------------------------------

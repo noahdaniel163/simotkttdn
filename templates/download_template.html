@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main-content">
+    <div class="card">
+        <h2>Tải file Excel mẫu theo mã SIMO</h2>
+        <form method="post">
+            <label for="simo_code">Chọn mã SIMO:</label>
+            <select name="simo_code" id="simo_code" required>
+                {% for code in simo_codes %}
+                <option value="{{ code }}">SIMO {{ code }}</option>
+                {% endfor %}
+            </select>
+            <div class="actions">
+                <button type="submit">Tải file Excel mẫu</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
