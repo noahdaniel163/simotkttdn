@@ -1,8 +1,8 @@
 import os
-USERNAME = os.getenv("SIMO_USERNAME", "simo-busanhcm")
-PASSWORD = os.getenv("SIMO_PASSWORD", "simo660")
-CONSUMER_KEY = os.getenv("SIMO_CONSUMER_KEY", "V2sF9dfIfbqXAkBfyauNz9WTJQoa")
-CONSUMER_SECRET = os.getenv("SIMO_CONSUMER_SECRET", "lnr90QpFPfClcm1chY5wijrLH08a")
+USERNAME = os.getenv("SIMO_USERNAME", "<YOUR_USERNAME>")
+PASSWORD = os.getenv("SIMO_PASSWORD", "<YOUR_PASSWORD>")
+CONSUMER_KEY = os.getenv("SIMO_CONSUMER_KEY", "<YOUR_CONSUMER_KEY>")
+CONSUMER_SECRET = os.getenv("SIMO_CONSUMER_SECRET", "<YOUR_CONSUMER_SECRET>")
 TOKEN_URL = os.getenv("SIMO_TOKEN_URL", "https://mgsimotest.sbv.gov.vn/token")
 ENTRYPOINT_URL_001 = os.getenv("SIMO_ENTRYPOINT_URL_001", "https://mgsimotest.sbv.gov.vn/simo/khdn/1.0/upload-bao-cao-danh-sach-tktt-khdn-api")
 ENTRYPOINT_URL_002 = os.getenv("SIMO_ENTRYPOINT_URL_002", "https://mgsimotest.sbv.gov.vn/simo/khdn/1.0/upload-bao-cao-danh-sach-tktt-khdn-nngl-api")
