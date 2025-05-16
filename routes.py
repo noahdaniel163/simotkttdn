@@ -289,3 +289,95 @@ def search_tktt_tochuc_api(
         UpdateDate=UpdateDate
     )
     return {"results": results}
+
+@router.get("/stats")
+def stats_page(request: Request):
+    return templates.TemplateResponse("stats.html", {"request": request})
+
+@router.get("/stats-data")
+def stats_data():
+    rows = search_tktt_tochuc()
+    # Tổng số tổ chức (theo Cif duy nhất)
+    orgs = {}
+    for r in rows:
+        orgs[r.get('Cif')] = r.get('TenToChuc')
+    total_orgs = len(orgs)
+    # Chú thích trạng thái tài khoản
+    status_labels = {
+        1: "Đang hoạt động",
+        5: "Đã đóng tài khoản"
+        # Có thể bổ sung thêm các trạng thái khác nếu cần
+    }
+    # Thống kê theo trạng thái tài khoản
+    status = {}
+    for r in rows:
+        k = r.get('TrangThaiTaiKhoan')
+        status[k] = status.get(k, 0) + 1
+    # Thống kê theo năm thành lập
+    year = {}
+    for r in rows:
+        ngay = r.get('NgayThanhLap')
+        y = None
+        if ngay:
+            parts = str(ngay).split('/')
+            if len(parts) == 3:
+                y = parts[2]
+            elif len(parts) == 1 and len(parts[0]) == 4:
+                y = parts[0]
+        if y:
+            year[y] = year.get(y, 0) + 1
+    # Thống kê theo năm mở tài khoản
+    open_year = {}
+    for r in rows:
+        ngay = r.get('NgayMoTaiKhoan')
+        y = None
+        if ngay:
+            parts = str(ngay).split('/')
+            if len(parts) == 3:
+                y = parts[2]
+            elif len(parts) == 1 and len(parts[0]) == 4:
+                y = parts[0]
+        if y:
+            open_year[y] = open_year.get(y, 0) + 1
+    # Top 10 tổ chức có nhiều tài khoản nhất
+    org_acc = {}
+    for r in rows:
+        cif = r.get('Cif')
+        ten = r.get('TenToChuc')
+        if cif:
+            if cif not in org_acc:
+                org_acc[cif] = {'Cif': cif, 'TenToChuc': ten, 'count': 0}
+            org_acc[cif]['count'] += 1
+    top_orgs = sorted(org_acc.values(), key=lambda x: -x['count'])[:10]
+    # 10 tài khoản mở gần nhất
+    def parse_date(s):
+        from datetime import datetime
+        for fmt in ("%d/%m/%Y", "%Y-%m-%d", "%d-%m-%Y", "%Y/%m/%d"):
+            try:
+                return datetime.strptime(str(s), fmt)
+            except:
+                pass
+        return None
+    latest_accounts = [r for r in rows if r.get('NgayMoTaiKhoan')]
+    latest_accounts = sorted(latest_accounts, key=lambda r: parse_date(r.get('NgayMoTaiKhoan')) or 0, reverse=True)[:10]
+    # Chuyển datetime về string cho mọi trường trong dict
+    def serialize_row(row):
+        for k, v in row.items():
+            if isinstance(v, (datetime.datetime, datetime.date)):
+                row[k] = v.isoformat()
+        return row
+    top_orgs = [serialize_row(dict(o)) for o in top_orgs]
+    latest_accounts = [serialize_row(dict(a)) for a in latest_accounts]
+    return JSONResponse({
+        'total_orgs': total_orgs,
+        'status': status,
+        'status_labels': status_labels,
+        'year': year,
+        'open_year': open_year,
+        'top_orgs': top_orgs,
+        'latest_accounts': latest_accounts
+    })
+
+@router.get("/stats-charts")
+def stats_charts_page(request: Request):
+    return templates.TemplateResponse("stats_charts.html", {"request": request})

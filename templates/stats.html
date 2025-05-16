@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main-content">
+    <div class="card" style="max-width:900px;margin:40px auto 0 auto;">
+        <h2 class="title-glow">Thống Kê Dữ Liệu TKTT_TOCHUC</h2>
+        <div class="stat-block">
+            <b>Tổng số tổ chức:</b> <span id="stat-total"></span>
+        </div>
+        <div class="stat-block">
+            <b>Thống kê theo trạng thái tài khoản:</b>
+            <div id="stat-status"></div>
+        </div>
+        <div class="stat-block">
+            <b>Thống kê theo năm thành lập:</b>
+            <div id="stat-year"></div>
+        </div>
+        <div class="stat-block">
+            <b>Thống kê theo năm mở tài khoản:</b>
+            <div id="stat-openyear"></div>
+        </div>
+        <div class="stat-block">
+            <b>Top 10 tổ chức có nhiều tài khoản nhất:</b>
+            <div id="stat-toporg"></div>
+        </div>
+        <div class="stat-block">
+            <b>10 tài khoản được mở gần nhất:</b>
+            <div id="stat-latest"></div>
+        </div>
+    </div>
+</div>
+<script>
+fetch('/stats-data').then(res=>res.json()).then(data=>{
+    document.getElementById('stat-total').innerText = data.total_orgs;
+    document.getElementById('stat-status').innerHTML = Object.entries(data.status).map(([k,v])=>`<div>Trạng thái ${k}: <b>${v}</b></div>`).join('');
+    document.getElementById('stat-year').innerHTML = Object.entries(data.year).map(([k,v])=>`<div>Năm ${k}: <b>${v}</b></div>`).join('');
+    document.getElementById('stat-openyear').innerHTML = Object.entries(data.open_year).map(([k,v])=>`<div>Năm ${k}: <b>${v}</b></div>`).join('');
+    document.getElementById('stat-toporg').innerHTML = data.top_orgs.map(o=>`<div>${o.Cif} - ${o.TenToChuc}: <b>${o.count}</b> tài khoản</div>`).join('');
+    document.getElementById('stat-latest').innerHTML = data.latest_accounts.map(a=>`<div>${a.Cif} - ${a.TenToChuc} - ${a.SoTaiKhoanToChuc} (${a.NgayMoTaiKhoan})</div>`).join('');
+});
+</script>
+<style>
+.title-glow { text-align:center; color:#43ff43; font-size:2rem; font-weight:800; margin-bottom:28px; text-shadow:0 0 12px #43ff43; }
+.stat-block { margin-bottom:22px; font-size:1.13rem; }
+.stat-block b { color:#43ff43; }
+.card { background:linear-gradient(135deg,#232526 0%,#1b5e20 100%); color:#e6ffe6; border-radius:20px; box-shadow:0 6px 32px #0008; padding:40px 36px 32px 36px; border:2px solid #43ff43; }
+</style>
+{% endblock %}
