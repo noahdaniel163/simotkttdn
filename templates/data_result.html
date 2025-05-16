@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main-content">
+    <div class="card data-process-glow">
+        <h2 class="title-glow">Kết quả tìm kiếm <span class="neon-green">TKTT_TOCHUC</span></h2>
+        <div class="form-row">
+            <label>Kết quả tìm kiếm:</label>
+            <div id="data-table-container" class="table-scroll-glow">
+                <!-- Bảng dữ liệu sẽ được render ở đây bằng JS -->
+            </div>
+        </div>
+        <div class="actions">
+            <a href="/data-process" class="btn-neon">Quay lại tìm kiếm</a>
+        </div>
+    </div>
+</div>
+<script>
+function renderTable(rows) {
+    if (!rows || !rows.length) {
+        document.getElementById('data-table-container').innerHTML = '<div style="color:#ffb6b6;padding:12px;">Không có dữ liệu phù hợp hoặc bạn chưa thực hiện tìm kiếm!</div>';
+        return;
+    }
+    let html = `<div class='table-responsive'><table class='data-table'>\n`;
+    html += `<thead><tr>`;
+    html += Object.keys(rows[0]).map(k=>`<th>${k}</th>`).join("");
+    html += `</tr></thead><tbody>`;
+    for (let i = 0; i < rows.length; i++) {
+        html += `<tr>`;
+        for (const k in rows[i]) html += `<td title='${rows[i][k]||""}'>${rows[i][k]||""}</td>`;
+        html += `</tr>`;
+    }
+    html += `</tbody></table></div>`;
+    document.getElementById('data-table-container').innerHTML = html;
+}
+window.onload = function() {
+    let rows = [];
+    try {
+        rows = JSON.parse(localStorage.getItem('data_result_rows') || '[]');
+    } catch(e) {}
+    renderTable(rows);
+};
+</script>
+<style>
+/* ...reuse style from data_process.html... */
+</style>
+{% endblock %}

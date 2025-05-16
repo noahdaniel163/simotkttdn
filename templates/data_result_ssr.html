@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main-content">
+    <div class="card data-process-glow" style="max-width:1200px;margin:40px auto 0 auto;">
+        <h2 class="title-glow">Kết quả tìm kiếm <span class="neon-green">TKTT_TOCHUC</span></h2>
+        <form id="simo-action-form" method="post" action="#" onsubmit="return false;">
+            <div class="form-row" style="margin-bottom:18px;">
+                <label for="simo_code">Chọn mã SIMO:</label>
+                <select name="simo_code" id="simo_code" required>
+                    <option value="001">SIMO 001</option>
+                    <option value="002">SIMO 002</option>
+                    <option value="003">SIMO 003</option>
+                    <option value="004">SIMO 004</option>
+                </select>
+                <button type="button" class="btn-neon" onclick="exportJsonSSR()">Xuất JSON</button>
+                <button type="button" class="btn-blue-glow" onclick="sendToSBVSSR()">Gửi lên SBV</button>
+            </div>
+            <div class="form-row">
+                <label style="font-size:1.15rem;font-weight:700;color:#43ff43;">Kết quả tìm kiếm:</label>
+                <div class="table-scroll-glow" style="margin-top:18px;">
+                    {% if results and results|length > 0 %}
+                    <div class='table-responsive'>
+                        <table class='data-table' id="ssr-data-table">
+                            <thead>
+                                <tr>
+                                    <th><input type='checkbox' onclick='toggleAllSSR(this)'></th>
+                                    {% for k in results[0].keys() %}
+                                    <th style="background:linear-gradient(90deg,#1b5e20 60%,#43ff43 100%);color:#43ff43;text-align:center;font-size:1.08rem;">{{ k }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in results %}
+                                <tr>
+                                    <td><input type='checkbox' name='row_select_ssr' value='{{ loop.index0 }}'></td>
+                                    {% for k in results[0].keys() %}
+                                    <td title="{{ row[k] }}" style="max-width:340px;white-space:pre-line;">{{ row[k] }}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="page-info" style="margin-top:18px;color:#43ff43;font-weight:700;">Tổng số dòng: {{ results|length }}</div>
+                    {% else %}
+                    <div style="color:#ffb6b6;padding:12px;">Không có dữ liệu phù hợp.</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div id="ssr-result-area"></div>
+        </form>
+        <div class="actions" style="margin-top:24px;justify-content:center;">
+            <a href="/data-process" class="btn-neon">Quay lại tìm kiếm</a>
+        </div>
+    </div>
+</div>
+<script>
+// Lưu dữ liệu kết quả vào biến JS để thao tác
+window._ssrData = {{ results|tojson }};
+function getSelectedRowsSSR() {
+    const rows = window._ssrData || [];
+    const selected = Array.from(document.querySelectorAll("input[name='row_select_ssr']:checked")).map(e=>parseInt(e.value));
+    return selected.map(idx=>rows[idx]);
+}
+function toggleAllSSR(cb) {
+    document.querySelectorAll("input[name='row_select_ssr']").forEach(e=>e.checked=cb.checked);
+}
+function exportJsonSSR() {
+    const simo = document.getElementById('simo_code').value;
+    const data = getSelectedRowsSSR();
+    if (!data.length) { alert('Vui lòng chọn ít nhất 1 dòng dữ liệu!'); return; }
+    fetch('/data/export-json', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({simo_code: simo, rows: data})
+    })
+    .then(res => res.json())
+    .then(res => {
+        const blob = new Blob([JSON.stringify(res.json, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `simo_${simo}_data.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+}
+function sendToSBVSSR() {
+    const simo = document.getElementById('simo_code').value;
+    const data = getSelectedRowsSSR();
+    if (!data.length) { alert('Vui lòng chọn ít nhất 1 dòng dữ liệu!'); return; }
+    fetch('/data/send-sbv', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({simo_code: simo, rows: data})
+    })
+    .then(res => res.json())
+    .then(res => {
+        document.getElementById('ssr-result-area').innerHTML = `<div class='result'><b>Kết quả gửi:</b><br><pre>${JSON.stringify(res, null, 2)}</pre></div>`;
+    });
+}
+</script>
+<style>
+.data-process-glow {
+    border-radius: 32px;
+    border: 2.5px solid #43ff43;
+    background: linear-gradient(135deg, #101613 0%, #1b5e20 100%);
+    box-shadow: 0 0 32px 8px #43ff4380, 0 8px 40px #000a;
+    padding: 44px 40px 36px 40px;
+    animation: fadeIn 0.7s;
+}
+.title-glow {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 36px;
+    letter-spacing: 1.5px;
+    color: #43ff43;
+    text-shadow: 0 0 16px #43ff43, 0 2px 16px #0008;
+}
+.neon-green {
+    color: #43ff43;
+    text-shadow: 0 0 8px #43ff43, 0 0 16px #43ff43;
+}
+.table-scroll-glow {
+    max-height: 420px;
+    overflow-x: auto;
+    overflow-y: auto;
+    border-radius: 16px;
+    border: 2px solid #43ff43;
+    background: #101613;
+    margin-bottom: 18px;
+    box-shadow: 0 0 16px #43ff43;
+}
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+.data-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 1.05rem;
+    background: #232526;
+    color: #e6ffe6;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 12px #43ff4340;
+}
+.data-table th, .data-table td {
+    border: 1.5px solid #43ff43;
+    padding: 10px 12px;
+    text-align: left;
+    max-width: 340px;
+    white-space: pre-line;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.data-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    font-weight: 900;
+    font-size: 1.12rem;
+    text-shadow: 0 0 8px #43ff43;
+}
+.data-table tr:nth-child(even) {
+    background: #232526;
+}
+.data-table tr:hover {
+    background: #2e4d3a;
+    box-shadow: 0 0 8px #43ff43;
+}
+.btn-neon {
+    background: linear-gradient(90deg, #43ff43 60%, #1b5e20 100%);
+    color: #101613;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 30px;
+    font-size: 1.08rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 0 16px #43ff43, 0 2px 8px #43ff4340;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    margin-top: 8px;
+    text-decoration: none;
+    display: inline-block;
+}
+.btn-neon:hover {
+    background: #43ff43;
+    color: #1b5e20;
+    box-shadow: 0 0 24px #43ff43, 0 4px 16px #43ff4340;
+}
+.page-info {
+    color: #43ff43;
+    font-weight: 700;
+    font-size: 1.08rem;
+}
+@media (max-width: 1100px) {
+    .data-process-glow { padding: 18px 2vw 14px 2vw; }
+    .title-glow { font-size: 1.5rem; }
+    .table-scroll-glow { max-height: 260px; }
+    .data-table th, .data-table td { font-size: 0.98rem; }
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: none; }
+}
+</style>
+{% endblock %}

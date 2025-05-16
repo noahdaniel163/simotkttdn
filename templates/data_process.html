@@ -1,0 +1,471 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main-content">
+    <div class="card data-process-glow">
+        <h2 class="title-glow">Xử lý dữ liệu <span class="neon-green">TKTT_TOCHUC</span></h2>
+        <form id="search-form-ssr" method="post" action="/data-result-ssr">
+            <div class="form-row search-row-glow">
+                <div class="search-col">
+                    <label for="search_cif">CIF</label>
+                    <input type="text" name="Cif" id="search_cif" placeholder="Nhập CIF...">
+                </div>
+                <div class="search-col">
+                    <label for="search_ten">Tên Tổ chức</label>
+                    <input type="text" name="TenToChuc" id="search_ten" placeholder="Nhập tên tổ chức...">
+                </div>
+                <div class="search-col">
+                    <label for="search_stk">Số Tài Khoản</label>
+                    <input type="text" name="SoTaiKhoanToChuc" id="search_stk" placeholder="Nhập số tài khoản...">
+                </div>
+                <div class="search-col">
+                    <label for="search_giayphep">Số Giấy Phép</label>
+                    <input type="text" name="SoGiayPhepThanhLap" id="search_giayphep" placeholder="Nhập số giấy phép...">
+                </div>
+                <div class="search-col search-btn-col">
+                    <button type="submit" class="btn-neon">Tìm kiếm</button>
+                </div>
+            </div>
+        </form>
+        <div class="form-row">
+            <div style="margin-top:18px;color:#43ff43;font-weight:600;">Hoặc sử dụng tìm kiếm realtime (AJAX) như cũ ở bên dưới:</div>
+        </div>
+        <form id="search-form" method="get" action="/data/tktt_tochuc">
+            <div class="form-row search-row-glow">
+                <div class="search-col">
+                    <label for="search_cif2">CIF</label>
+                    <input type="text" name="cif" id="search_cif2" placeholder="Nhập CIF...">
+                </div>
+                <div class="search-col">
+                    <label for="search_ten2">Tên Tổ chức</label>
+                    <input type="text" name="ten_to_chuc" id="search_ten2" placeholder="Nhập tên tổ chức...">
+                </div>
+                <div class="search-col">
+                    <label for="search_stk2">Số Tài Khoản</label>
+                    <input type="text" name="so_tai_khoan" id="search_stk2" placeholder="Nhập số tài khoản...">
+                </div>
+                <div class="search-col">
+                    <label for="search_giayphep2">Số Giấy Phép</label>
+                    <input type="text" name="so_giay_phep" id="search_giayphep2" placeholder="Nhập số giấy phép...">
+                </div>
+                <div class="search-col search-btn-col">
+                    <button type="submit" class="btn-neon">Tìm kiếm AJAX</button>
+                </div>
+            </div>
+        </form>
+        <form id="process-form" method="post" action="/data/process-action">
+            <div class="form-row simo-row-glow">
+                <label for="simo_code">Chọn mã SIMO:</label>
+                <select name="simo_code" id="simo_code" required>
+                    <option value="001">SIMO 001</option>
+                    <option value="002">SIMO 002</option>
+                    <option value="003">SIMO 003</option>
+                    <option value="004">SIMO 004</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>Kết quả tìm kiếm (AJAX):</label>
+                <div id="data-table-container" class="table-scroll-glow">
+                    <!-- Bảng dữ liệu sẽ được render ở đây bằng JS -->
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" class="btn-neon" onclick="exportJson()">Xuất JSON</button>
+                <button type="button" class="btn-blue-glow" onclick="sendToSBV()">Gửi lên SBV</button>
+            </div>
+        </form>
+        <div id="result-area"></div>
+    </div>
+</div>
+<script>
+let loadingTimeout = null;
+function showLoading() {
+    document.getElementById('data-table-container').innerHTML = '<div class="loading-spinner"></div>';
+}
+function hideLoading() {
+    // do nothing, renderTable sẽ ghi đè
+}
+function highlightKeyword(text, keyword) {
+    if (!keyword) return text;
+    try {
+        const re = new RegExp('('+keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')+')', 'gi');
+        return text.replace(re, '<span class="highlight">$1</span>');
+    } catch { return text; }
+}
+let currentPage = 1;
+let pageSize = 20;
+let lastRows = [];
+let lastKeywords = {};
+function fetchData(params = {}) {
+    showLoading();
+    const url = new URL(window.location.origin + '/data/tktt_tochuc');
+    Object.keys(params).forEach(k => {
+        if (params[k]) url.searchParams.append(k, params[k]);
+    });
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            lastRows = data.results || [];
+            lastKeywords = params;
+            currentPage = 1;
+            renderTable(lastRows, lastKeywords, currentPage);
+        })
+        .catch(err => {
+            document.getElementById('data-table-container').innerHTML = '<div style="color:#ffb6b6;padding:12px;">Lỗi khi lấy dữ liệu!</div>';
+        });
+}
+function renderTable(rows, keywords = {}, page = 1) {
+    if (!rows.length) {
+        document.getElementById('data-table-container').innerHTML = '<div style="color:#ffb6b6;padding:12px;">Không có dữ liệu phù hợp.</div>';
+        window._tableData = [];
+        return;
+    }
+    const total = rows.length;
+    const totalPages = Math.ceil(total / pageSize);
+    page = Math.max(1, Math.min(page, totalPages));
+    const start = (page - 1) * pageSize;
+    const end = Math.min(start + pageSize, total);
+    const pageRows = rows.slice(start, end);
+    let html = `<div class='table-responsive'><table class='data-table'>\n`;
+    html += `<thead><tr>`;
+    html += `<th><input type='checkbox' onclick='toggleAll(this)'></th>`;
+    const allKeys = Object.keys(rows.reduce((acc, cur) => { for (const k in cur) acc[k]=1; return acc; }, {}));
+    html += allKeys.map(k=>`<th>${k}</th>`).join("");
+    html += `</tr></thead><tbody>`;
+    for (let i = 0; i < pageRows.length; i++) {
+        html += `<tr>`;
+        html += `<td><input type='checkbox' name='row_select' value='${start + i}'></td>`;
+        for (const k of allKeys) {
+            let cell = pageRows[i][k] || "";
+            let kw = keywords[k] || "";
+            html += `<td title='${cell}'>${highlightKeyword(cell.toString(), kw)}</td>`;
+        }
+        html += `</tr>`;
+    }
+    html += `</tbody></table></div>`;
+    // Phân trang
+    html += `<div class='pagination'>`;
+    if (page > 1) html += `<button class='page-btn' onclick='gotoPage(${page-1})'>&laquo; Trước</button>`;
+    html += `<span class='page-info'>Trang ${page}/${totalPages} (${total} dòng)</span>`;
+    if (page < totalPages) html += `<button class='page-btn' onclick='gotoPage(${page+1})'>Sau &raquo;</button>`;
+    html += `</div>`;
+    document.getElementById('data-table-container').innerHTML = html;
+    window._tableData = rows;
+}
+function gotoPage(page) {
+    renderTable(lastRows, lastKeywords, page);
+    currentPage = page;
+}
+function toggleAll(cb) {
+    document.querySelectorAll("input[name='row_select']").forEach(e=>e.checked=cb.checked);
+}
+document.getElementById('search-form').onsubmit = function(e) {
+    e.preventDefault();
+    const params = {
+        Cif: document.getElementById('search_cif2').value,
+        TenToChuc: document.getElementById('search_ten2').value,
+        SoTaiKhoanToChuc: document.getElementById('search_stk2').value,
+        SoGiayPhepThanhLap: document.getElementById('search_giayphep2').value
+    };
+    showLoading();
+    const url = new URL(window.location.origin + '/data/tktt_tochuc');
+    Object.keys(params).forEach(k => {
+        if (params[k]) url.searchParams.append(k, params[k]);
+    });
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            localStorage.setItem('data_result_rows', JSON.stringify(data.results || []));
+            window.location.href = '/data-result';
+        })
+        .catch(err => {
+            alert('Lỗi khi lấy dữ liệu!');
+        });
+};
+function getSelectedRows() {
+    const rows = window._tableData || [];
+    const selected = Array.from(document.querySelectorAll("input[name='row_select']:checked")).map(e=>parseInt(e.value));
+    return selected.map(idx=>rows[idx]);
+}
+function exportJson() {
+    const simo = document.getElementById('simo_code').value;
+    const data = getSelectedRows();
+    if (!data.length) { alert('Vui lòng chọn ít nhất 1 dòng dữ liệu!'); return; }
+    fetch('/data/export-json', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({simo_code: simo, rows: data})
+    })
+    .then(res => res.json())
+    .then(res => {
+        const blob = new Blob([JSON.stringify(res.json, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `simo_${simo}_data.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+}
+function sendToSBV() {
+    const simo = document.getElementById('simo_code').value;
+    const data = getSelectedRows();
+    if (!data.length) { alert('Vui lòng chọn ít nhất 1 dòng dữ liệu!'); return; }
+    fetch('/data/send-sbv', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({simo_code: simo, rows: data})
+    })
+    .then(res => res.json())
+    .then(res => {
+        document.getElementById('result-area').innerHTML = `<div class='result'><b>Kết quả gửi:</b><br><pre>${JSON.stringify(res, null, 2)}</pre></div>`;
+    });
+}
+window.onload = () => fetchData();
+</script>
+<style>
+.loading-spinner {
+    margin: 40px auto 40px auto;
+    border: 8px solid #232526;
+    border-top: 8px solid #43ff43;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.highlight {
+    background: #fffd38;
+    color: #1b5e20;
+    border-radius: 3px;
+    padding: 0 2px;
+    font-weight: bold;
+}
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 18px 0 0 0;
+}
+.page-btn {
+    background: #43ff43;
+    color: #1b5e20;
+    border: none;
+    border-radius: 7px;
+    padding: 7px 18px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #43ff4340;
+    transition: background 0.2s, color 0.2s;
+}
+.page-btn:hover {
+    background: #2ecc40;
+    color: #fff;
+}
+.page-info {
+    color: #43ff43;
+    font-weight: 700;
+    font-size: 1.08rem;
+}
+.data-process-glow {
+    max-width: 1200px;
+    margin: 36px auto 0 auto;
+    border-radius: 32px;
+    border: 2.5px solid #43ff43;
+    background: linear-gradient(135deg, #101613 0%, #1b5e20 100%);
+    box-shadow: 0 0 32px 8px #43ff4380, 0 8px 40px #000a;
+    padding: 44px 40px 36px 40px;
+    animation: fadeIn 0.7s;
+}
+.title-glow {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 36px;
+    letter-spacing: 1.5px;
+    color: #43ff43;
+    text-shadow: 0 0 16px #43ff43, 0 2px 16px #0008;
+}
+.neon-green {
+    color: #43ff43;
+    text-shadow: 0 0 8px #43ff43, 0 0 16px #43ff43;
+}
+.search-row-glow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 28px;
+    justify-content: space-between;
+}
+.search-col {
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+    flex: 1 1 180px;
+}
+.search-btn-col {
+    display: flex;
+    align-items: flex-end;
+    min-width: 120px;
+}
+.search-row-glow label {
+    color: #43ff43;
+    font-weight: 700;
+    margin-bottom: 7px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 6px #43ff43;
+}
+.search-row-glow input[type="text"] {
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 2px solid #43ff43;
+    background: #181c1a;
+    color: #e6ffe6;
+    font-size: 1.08rem;
+    box-shadow: 0 0 8px #43ff4340;
+    margin-bottom: 0;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+.search-row-glow input[type="text"]:focus {
+    border: 2.5px solid #43ff43;
+    box-shadow: 0 0 16px #43ff43;
+    outline: none;
+}
+.btn-neon {
+    background: linear-gradient(90deg, #43ff43 60%, #1b5e20 100%);
+    color: #101613;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 30px;
+    font-size: 1.08rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 0 16px #43ff43, 0 2px 8px #43ff4340;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    margin-top: 8px;
+}
+.btn-neon:hover {
+    background: #43ff43;
+    color: #1b5e20;
+    box-shadow: 0 0 24px #43ff43, 0 4px 16px #43ff4340;
+}
+.btn-blue-glow {
+    background: linear-gradient(90deg, #1e88e5 60%, #43ff43 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 30px;
+    font-size: 1.08rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 0 16px #1e88e5, 0 2px 8px #43ff4340;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    margin-top: 8px;
+}
+.btn-blue-glow:hover {
+    background: #43ff43;
+    color: #1e88e5;
+    box-shadow: 0 0 24px #1e88e5, 0 4px 16px #43ff4340;
+}
+.simo-row-glow label {
+    color: #43ff43;
+    font-weight: 700;
+    margin-bottom: 7px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 6px #43ff43;
+}
+select {
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 2px solid #43ff43;
+    background: #181c1a;
+    color: #e6ffe6;
+    font-size: 1.08rem;
+    box-shadow: 0 0 8px #43ff4340;
+    margin-bottom: 0;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+select:focus {
+    border: 2.5px solid #43ff43;
+    box-shadow: 0 0 16px #43ff43;
+    outline: none;
+}
+.table-scroll-glow {
+    max-height: 420px;
+    overflow-x: auto;
+    overflow-y: auto;
+    border-radius: 16px;
+    border: 2px solid #43ff43;
+    background: #101613;
+    margin-bottom: 18px;
+    box-shadow: 0 0 16px #43ff43;
+}
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+.data-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 1.05rem;
+    background: #232526;
+    color: #e6ffe6;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 12px #43ff4340;
+}
+.data-table th, .data-table td {
+    border: 1.5px solid #43ff43;
+    padding: 10px 12px;
+    text-align: left;
+    max-width: 320px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.data-table th {
+    background: linear-gradient(90deg, #1b5e20 60%, #43ff43 100%);
+    color: #43ff43;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    font-weight: 900;
+    font-size: 1.12rem;
+    text-shadow: 0 0 8px #43ff43;
+}
+.data-table tr:nth-child(even) {
+    background: #232526;
+}
+.data-table tr:hover {
+    background: #2e4d3a;
+    box-shadow: 0 0 8px #43ff43;
+}
+.result {
+    background: #1e2d1e;
+    border: 2px solid #43ff43;
+    color: #b6ffb6;
+    margin-top: 24px;
+    padding: 22px;
+    border-radius: 14px;
+    font-size: 1.08rem;
+    word-break: break-all;
+    box-shadow: 0 2px 12px #43ff4340;
+}
+@media (max-width: 1100px) {
+    .data-process-glow { padding: 18px 2vw 14px 2vw; }
+    .title-glow { font-size: 1.5rem; }
+    .table-scroll-glow { max-height: 260px; }
+    .data-table th, .data-table td { font-size: 0.98rem; }
+    .search-row-glow { flex-wrap: wrap; gap: 12px; }
+    .search-col { min-width: 120px; }
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: none; }
+}
+</style>
+{% endblock %}

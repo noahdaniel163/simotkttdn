@@ -1,4 +1,6 @@
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Response, Query, Request, Form
+from fastapi.responses import JSONResponse
+from fastapi.templating import Jinja2Templates
 import datetime
 import requests
 from auth import get_sbv_token
@@ -7,8 +9,10 @@ from models import Simo001Payload, Simo002Payload, Simo003Payload, Simo004Payloa
 import os
 from datetime import datetime as dt
 import subprocess
+from db_utils import search_tktt_tochuc
 
 router = APIRouter()
+templates = Jinja2Templates(directory="templates")
 
 def log_to_file(simo_code: str, action: str, data: dict, response: object = None, error: str = None, response_headers: dict = None):
     import json
@@ -157,3 +161,131 @@ def health_http(endpoint: str):
         return {"endpoint": endpoint, "status_code": resp.status_code, "reason": resp.reason}
     except Exception as e:
         return Response(content=f"Lỗi: {str(e)}", status_code=503, media_type="text/plain")
+
+@router.get("/data-process")
+def data_process_page(request: Request):
+    return templates.TemplateResponse("data_process.html", {"request": request})
+
+@router.get("/data-result")
+def data_result_page(request: Request):
+    return templates.TemplateResponse("data_result.html", {"request": request})
+
+import datetime
+import json
+
+def json_serial(obj):
+    if isinstance(obj, (datetime.datetime, datetime.date)):
+        return obj.isoformat()
+    raise TypeError(f"Type {type(obj)} not serializable")
+
+@router.post("/data-result-ssr")
+def data_result_ssr(request: Request,
+    Cif: str = Form(None),
+    TenToChuc: str = Form(None),
+    SoTaiKhoanToChuc: str = Form(None),
+    SoGiayPhepThanhLap: str = Form(None)
+):
+    results = search_tktt_tochuc(
+        Cif=Cif,
+        TenToChuc=TenToChuc,
+        SoTaiKhoanToChuc=SoTaiKhoanToChuc,
+        SoGiayPhepThanhLap=SoGiayPhepThanhLap
+    )
+    # Chuyển đổi datetime về string để tránh lỗi tojson
+    for row in results:
+        for k, v in row.items():
+            if isinstance(v, (datetime.datetime, datetime.date)):
+                row[k] = v.isoformat()
+    return templates.TemplateResponse("data_result_ssr.html", {"request": request, "results": results})
+
+@router.get("/data/tktt_tochuc")
+def data_tktt_tochuc(q: str = Query(None)):
+    # Tìm kiếm tương đối theo nhiều trường nếu có từ khóa q
+    if q:
+        results = search_tktt_tochuc(Cif=q, TenToChuc=q, SoGiayPhepThanhLap=q, HoTenNguoiDaiDien=q, SoTaiKhoanToChuc=q)
+    else:
+        results = search_tktt_tochuc()
+    return {"results": results}
+
+# Helper: mapping row dict sang schema đúng mã simo
+SIMO_FIELDS = {
+    "001": [f for f in Simo001Payload.schema()['properties'].keys()],
+    "002": [f for f in Simo002Payload.schema()['properties'].keys()],
+    "003": [f for f in Simo003Payload.schema()['properties'].keys()],
+    "004": [f for f in Simo004Payload.schema()['properties'].keys()],
+}
+def map_row_schema(row, simo_code):
+    fields = SIMO_FIELDS.get(simo_code, [])
+    return {k: row.get(k, None) for k in fields}
+
+@router.post("/data/export-json")
+def export_json_api(data: dict):
+    simo_code = data.get("simo_code")
+    rows = data.get("rows", [])
+    json_data = [map_row_schema(row, simo_code) for row in rows]
+    return {"json": json_data}
+
+@router.post("/data/send-sbv")
+def send_sbv_api(data: dict):
+    simo_code = data.get("simo_code")
+    rows = data.get("rows", [])
+    json_data = [map_row_schema(row, simo_code) for row in rows]
+    # Gọi endpoint tương ứng
+    if simo_code == "001":
+        return simo_001([Simo001Payload(**item) for item in json_data])
+    if simo_code == "002":
+        return simo_002([Simo002Payload(**item) for item in json_data])
+    if simo_code == "003":
+        return simo_003([Simo003Payload(**item) for item in json_data])
+    if simo_code == "004":
+        return simo_004([Simo004Payload(**item) for item in json_data])
+    return JSONResponse({"error": "Mã simo không hợp lệ"}, status_code=400)
+
+@router.get("/data/tktt_tochuc", tags=["Xử lý dữ liệu"])
+def search_tktt_tochuc_api(
+    Cif: str = Query(None),
+    TenToChuc: str = Query(None),
+    SoGiayPhepThanhLap: str = Query(None),
+    LoaiGiayToThanhLapToChuc: int = Query(None),
+    NgayThanhLap: str = Query(None),
+    DiaChiToChuc: str = Query(None),
+    HoTenNguoiDaiDien: str = Query(None),
+    SoGiayToTuyThan: str = Query(None),
+    LoaiGiayToTuyThan: int = Query(None),
+    NgaySinh: str = Query(None),
+    GioiTinh: int = Query(None),
+    QuocTich: str = Query(None),
+    DienThoai: str = Query(None),
+    SoTaiKhoanToChuc: str = Query(None),
+    NgayMoTaiKhoan: str = Query(None),
+    TrangThaiTaiKhoan: int = Query(None),
+    DiaChiMAC: str = Query(None),
+    SO_IMEI: str = Query(None),
+    NghiNgo: int = Query(None),
+    LyDoCapNhat: str = Query(None),
+    UpdateDate: str = Query(None)
+):
+    results = search_tktt_tochuc(
+        Cif=Cif,
+        TenToChuc=TenToChuc,
+        SoGiayPhepThanhLap=SoGiayPhepThanhLap,
+        LoaiGiayToThanhLapToChuc=LoaiGiayToThanhLapToChuc,
+        NgayThanhLap=NgayThanhLap,
+        DiaChiToChuc=DiaChiToChuc,
+        HoTenNguoiDaiDien=HoTenNguoiDaiDien,
+        SoGiayToTuyThan=SoGiayToTuyThan,
+        LoaiGiayToTuyThan=LoaiGiayToTuyThan,
+        NgaySinh=NgaySinh,
+        GioiTinh=GioiTinh,
+        QuocTich=QuocTich,
+        DienThoai=DienThoai,
+        SoTaiKhoanToChuc=SoTaiKhoanToChuc,
+        NgayMoTaiKhoan=NgayMoTaiKhoan,
+        TrangThaiTaiKhoan=TrangThaiTaiKhoan,
+        DiaChiMAC=DiaChiMAC,
+        SO_IMEI=SO_IMEI,
+        NghiNgo=NghiNgo,
+        LyDoCapNhat=LyDoCapNhat,
+        UpdateDate=UpdateDate
+    )
+    return {"results": results}
