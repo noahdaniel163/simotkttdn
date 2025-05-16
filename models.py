@@ -27,7 +27,6 @@ class Simo002Payload(BaseModel):
     SoTaiKhoanToChuc: str
     TrangThaiTaiKhoan: int
     NghiNgo: int
-    GhiChu: str
 
 class Simo003Payload(BaseModel):
     Cif: str
