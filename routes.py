@@ -306,7 +306,6 @@ def stats_data():
     status_labels = {
         1: "Đang hoạt động",
         5: "Đã đóng tài khoản"
-        # Có thể bổ sung thêm các trạng thái khác nếu cần
     }
     # Thống kê theo trạng thái tài khoản
     status = {}
@@ -360,6 +359,9 @@ def stats_data():
         return None
     latest_accounts = [r for r in rows if r.get('NgayMoTaiKhoan')]
     latest_accounts = sorted(latest_accounts, key=lambda r: parse_date(r.get('NgayMoTaiKhoan')) or 0, reverse=True)[:10]
+    # Thống kê tài khoản nghi ngờ gian lận
+    fraud_count = sum(1 for r in rows if r.get('NghiNgo', 0) and int(r.get('NghiNgo', 0)) > 0)
+    total_accounts = len(rows)
     # Chuyển datetime về string cho mọi trường trong dict
     def serialize_row(row):
         for k, v in row.items():
@@ -375,9 +377,41 @@ def stats_data():
         'year': year,
         'open_year': open_year,
         'top_orgs': top_orgs,
-        'latest_accounts': latest_accounts
+        'latest_accounts': latest_accounts,
+        'fraud_count': fraud_count,
+        'total_accounts': total_accounts
     })
 
 @router.get("/stats-charts")
 def stats_charts_page(request: Request):
     return templates.TemplateResponse("stats_charts.html", {"request": request})
+
+@router.get("/stats-fraud")
+def stats_fraud_page(request: Request):
+    return templates.TemplateResponse("stats_fraud.html", {"request": request})
+
+@router.get("/stats-fraud-data")
+def stats_fraud_data():
+    rows = search_tktt_tochuc()
+    NGHI_NGO_REASON = {
+        0: "Không nghi ngờ gian lận.",
+        1: "Thông tin hồ sơ không trùng khớp với CSDL quốc gia.",
+        2: "Tài khoản nằm trong danh sách mua bán trên mạng.",
+        3: "Nhận tiền từ nhiều tài khoản và chuyển/rút ngay.",
+        4: "Có >3 giao dịch nhận từ tài khoản nghi ngờ lừa đảo.",
+        5: "Thuộc danh sách cảnh báo của NHNN/Công an.",
+        6: "Phát sinh giao dịch bất thường.",
+        7: "Một MAC dùng cho nhiều tài khoản."
+    }
+    fraud_accounts = [r for r in rows if r.get('NghiNgo', 0) and int(r.get('NghiNgo', 0)) > 0]
+    for r in fraud_accounts:
+        code = int(r.get('NghiNgo', 0))
+        r['NghiNgoReason'] = NGHI_NGO_REASON.get(code, 'Khác')
+    fraud_stats = {}
+    for r in fraud_accounts:
+        code = int(r.get('NghiNgo', 0))
+        fraud_stats[code] = fraud_stats.get(code, 0) + 1
+    return JSONResponse({
+        'fraud_accounts': fraud_accounts,
+        'fraud_stats': fraud_stats
+    })

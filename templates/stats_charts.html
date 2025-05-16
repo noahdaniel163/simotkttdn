@@ -3,12 +3,17 @@
 <div class="main-content">
     <div class="card" style="max-width:950px;margin:40px auto 0 auto;">
         <h2 class="title-glow">Biểu Đồ Thống Kê TKTT_TOCHUC</h2>
+        <div class="chart-desc" style="margin-bottom:18px;">
+            <b>Chú thích:</b> <span style="color:#43ff43">1</span> = Đang hoạt động, <span style="color:#43ff43">5</span> = Đã đóng tài khoản.<br>
+            <b>Tài khoản nghi ngờ gian lận</b>: Số tài khoản có trường <b>NghiNgo &gt; 0</b>.
+        </div>
         <div class="chart-tabs">
             <button class="chart-tab active" onclick="showChart('status')">Trạng thái tài khoản</button>
             <button class="chart-tab" onclick="showChart('year')">Năm thành lập</button>
             <button class="chart-tab" onclick="showChart('openyear')">Năm mở tài khoản</button>
             <button class="chart-tab" onclick="showChart('toporg')">Top 10 tổ chức nhiều tài khoản</button>
             <button class="chart-tab" onclick="showChart('latest')">10 tài khoản mở gần nhất</button>
+            <button class="chart-tab" onclick="showChart('fraud')">Tài khoản nghi ngờ gian lận</button>
         </div>
         <div class="chart-container">
             <canvas id="chart-status"></canvas>
@@ -16,6 +21,7 @@
             <canvas id="chart-openyear" style="display:none"></canvas>
             <canvas id="chart-toporg" style="display:none"></canvas>
             <canvas id="chart-latest" style="display:none"></canvas>
+            <canvas id="chart-fraud" style="display:none"></canvas>
         </div>
     </div>
 </div>
@@ -30,13 +36,14 @@ fetch('/stats-data').then(res=>res.json()).then(data=>{
     renderOpenYear();
     renderTopOrg();
     renderLatest();
+    renderFraud();
 });
 function showChart(type) {
     document.querySelectorAll('.chart-tab').forEach(btn=>btn.classList.remove('active'));
     document.querySelectorAll('.chart-tab').forEach((btn,i)=>{
         if (btn.textContent.toLowerCase().includes(type)) btn.classList.add('active');
     });
-    ['status','year','openyear','toporg','latest'].forEach(id=>{
+    ['status','year','openyear','toporg','latest','fraud'].forEach(id=>{
         document.getElementById('chart-'+id).style.display = (id===type)?'block':'none';
     });
 }
@@ -95,6 +102,19 @@ function renderLatest() {
         options: { responsive:true, plugins:{legend:{display:false}} }
     });
 }
+function renderFraud() {
+    const ctx = document.getElementById('chart-fraud').getContext('2d');
+    if (chartObjs.fraud) chartObjs.fraud.destroy();
+    const labels = ['Tài khoản nghi ngờ', 'Tài khoản bình thường'];
+    const fraud = chartData.fraud_count || 0;
+    const total = chartData.total_accounts || 1;
+    const normal = total - fraud;
+    chartObjs.fraud = new Chart(ctx, {
+        type: 'doughnut',
+        data: { labels, datasets: [{ data: [fraud, normal], backgroundColor: ['#e53935','#43ff43'] }] },
+        options: { responsive:true, plugins:{legend:{position:'bottom'}} }
+    });
+}
 function genColors(n) {
     const base = ['#43ff43','#1e88e5','#ffb300','#e53935','#8e24aa','#00bcd4','#fbc02d','#43a047','#fb8c00','#3949ab'];
     return Array.from({length:n},(_,i)=>base[i%base.length]);
@@ -103,10 +123,11 @@ function genColors(n) {
 <style>
 .title-glow { text-align:center; color:#43ff43; font-size:2rem; font-weight:800; margin-bottom:28px; text-shadow:0 0 12px #43ff43; }
 .card { background:linear-gradient(135deg,#232526 0%,#1b5e20 100%); color:#e6ffe6; border-radius:20px; box-shadow:0 6px 32px #0008; padding:40px 36px 32px 36px; border:2px solid #43ff43; }
-.chart-tabs { display:flex; gap:12px; justify-content:center; margin-bottom:24px; }
+.chart-tabs { display:flex; gap:12px; justify-content:center; margin-bottom:24px; flex-wrap:wrap; }
 .chart-tab { background:#232526; color:#43ff43; border:none; border-radius:7px; padding:10px 22px; font-size:1.08rem; font-weight:600; cursor:pointer; box-shadow:0 2px 8px #43ff4340; transition:background 0.2s,color 0.2s; }
 .chart-tab.active, .chart-tab:hover { background:#43ff43; color:#1b5e20; }
 .chart-container { width:100%; min-height:420px; }
 canvas { background:#fff; border-radius:12px; box-shadow:0 2px 12px #43ff4340; margin:0 auto; max-width:100%; }
+.chart-desc { font-size:1.08rem; margin-bottom:10px; color:#b6ffb6; }
 </style>
 {% endblock %}

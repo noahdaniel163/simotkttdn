@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main-content">
+    <div class="card" style="max-width:1100px;margin:40px auto 0 auto;">
+        <h2 class="title-glow">Thống Kê Tài Khoản Nghi Ngờ Gian Lận</h2>
+        <div class="fraud-desc" style="margin-bottom:18px;">
+            <b>Chú thích mã NghiNgo:</b><br>
+            <ul style="margin:8px 0 0 18px;">
+                <li><b>0</b>: Không nghi ngờ gian lận.</li>
+                <li><b>1</b>: Thông tin hồ sơ không trùng khớp với CSDL quốc gia.</li>
+                <li><b>2</b>: Tài khoản nằm trong danh sách mua bán trên mạng.</li>
+                <li><b>3</b>: Nhận tiền từ nhiều tài khoản và chuyển/rút ngay.</li>
+                <li><b>4</b>: Có &gt;3 giao dịch nhận từ tài khoản nghi ngờ lừa đảo.</li>
+                <li><b>5</b>: Thuộc danh sách cảnh báo của NHNN/Công an.</li>
+                <li><b>6</b>: Phát sinh giao dịch bất thường.</li>
+                <li><b>7</b>: Một MAC dùng cho nhiều tài khoản.</li>
+            </ul>
+        </div>
+        <div class="stat-block">
+            <b>Thống kê số lượng theo từng loại nghi ngờ:</b>
+            <div id="fraud-stats"></div>
+        </div>
+        <div class="stat-block">
+            <b>Danh sách tài khoản nghi ngờ:</b>
+            <div style="overflow-x:auto;">
+                <table class="fraud-table">
+                    <thead>
+                        <tr>
+                            <th>Cif</th>
+                            <th>Tên tổ chức</th>
+                            <th>Số tài khoản</th>
+                            <th>Mã NghiNgo</th>
+                            <th>Lý do nghi ngờ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fraud-list"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+fetch('/stats-fraud-data').then(res=>res.json()).then(data=>{
+    // Thống kê số lượng từng loại nghi ngờ
+    let htmlStats = Object.entries(data.fraud_stats).map(([k,v])=>`<div><b>${k}</b>: ${v} tài khoản</div>`).join('');
+    document.getElementById('fraud-stats').innerHTML = htmlStats;
+    // Danh sách tài khoản nghi ngờ
+    let htmlList = data.fraud_accounts.map(r=>`<tr><td>${r.Cif||''}</td><td>${r.TenToChuc||''}</td><td>${r.SoTaiKhoanToChuc||''}</td><td>${r.NghiNgo}</td><td>${r.NghiNgoReason}</td></tr>`).join('');
+    document.getElementById('fraud-list').innerHTML = htmlList;
+});
+</script>
+<style>
+.title-glow { text-align:center; color:#e53935; font-size:2rem; font-weight:800; margin-bottom:28px; text-shadow:0 0 12px #e53935; }
+.card { background:linear-gradient(135deg,#232526 0%,#1b5e20 100%); color:#e6ffe6; border-radius:20px; box-shadow:0 6px 32px #0008; padding:40px 36px 32px 36px; border:2px solid #e53935; }
+.fraud-table { border-collapse:collapse; width:100%; margin-top:12px; }
+.fraud-table th, .fraud-table td { border:1px solid #43ff43; padding:8px 10px; text-align:left; }
+.fraud-table th { background:#1b5e20; color:#43ff43; font-weight:700; }
+.fraud-table tr:nth-child(even) { background:#232526; }
+.fraud-table tr:nth-child(odd) { background:#1a2420; }
+.fraud-table td { color:#fff; }
+.fraud-desc { font-size:1.08rem; color:#ffb6b6; }
+</style>
+{% endblock %}
