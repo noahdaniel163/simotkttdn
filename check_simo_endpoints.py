@@ -1,10 +1,10 @@
 import requests
 
 SIMO_ENDPOINTS = {
-    "001": "https://mgsimotest.sbv.gov.vn/simo/khdn/1.0/upload-bao-cao-danh-sach-tktt-khdn-nngl-api",
-    "002": "https://mgsimotest.sbv.gov.vn/simo/khdn/1.0/upload-bao-cao-danh-sach-tktt-khdn-nngl-api-002",
-    "003": "https://mgsimotest.sbv.gov.vn/simo/khdn/1.0/upload-bao-cao-danh-sach-tktt-khdn-nngl-api-003",
-    "004": "https://mgsimotest.sbv.gov.vn/simo/khdn/1.0/upload-bao-cao-danh-sach-tktt-khdn-nngl-api-004",
+    "001": "https://mgsimotest.sbv.gov.vn/simo/khdn/1.0/upload-bao-cao-danh-sach-tktt-khdn-api",
+    "002": "https://mgsimotest.sbv.gov.vn/simo/khdn/1.0/upload-bao-cao-tktt-khdn-nngl-api",
+    "003": "https://mgsimotest.sbv.gov.vn/simo/khdn/1.0/upload-bao-cao-cap-nhat-tktt-khdn-nngl-api",
+    "004": "https://mgsimotest.sbv.gov.vn/simo/khdn/1.0/upload-bao-cao-cap-nhat-danh-sach-tktt-khdn-api",
 }
 
 def check_url(url):
