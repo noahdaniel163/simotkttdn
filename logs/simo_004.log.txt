@@ -2,3 +2,63 @@
 Payload: [{'Cif': '123456789012345678901234567890123456', 'TenToChuc': 'Công ty TNHH ABC', 'SoGiayPhepThanhLap': '123456789012345', 'LoaiGiayToThanhLapToChuc': 1, 'NgayThanhLap': '01/01/2020', 'DiaChiToChuc': '123 Đường Láng, Đống Đa, Hà Nội', 'HoTenNguoiDaiDien': 'Nguyễn Văn A', 'SoGiayToTuyThan': '123456789012', 'LoaiGiayToTuyThan': 1, 'NgaySinh': '15/05/1980', 'GioiTinh': 1, 'QuocTich': 'Việt Nam', 'DienThoai': '0987654321', 'SoTaiKhoanToChuc': '12345678901234567890', 'NgayMoTaiKhoan': '01/02/2021', 'TrangThaiTaiKhoan': 1, 'DiaChiMAC': '001A2B3C4D5E', 'SO_IMEI': '123456789012345'}]
 Response: {'code': '00', 'message': '', 'success': True, 'result': 'done'}
 ------------------------------------------------------------
+[2025-05-16 17:22:07] ACTION: send
+Payload: [
+  {
+    "Cif": "111111111111111111111111111111111111",
+    "TenToChuc": "CÔNG TY CP ĐẦU TƯ A",
+    "SoGiayPhepThanhLap": "0102030001",
+    "LoaiGiayToThanhLapToChuc": 1,
+    "NgayThanhLap": "02/02/2020",
+    "DiaChiToChuc": "456 Nguyễn Huệ, Q.1, TP.HCM",
+    "HoTenNguoiDaiDien": "Trần Thị B",
+    "SoGiayToTuyThan": "012345678",
+    "LoaiGiayToTuyThan": 3,
+    "NgaySinh": "01/01/1980",
+    "GioiTinh": 0,
+    "QuocTich": "VN",
+    "DienThoai": "0909123456",
+    "SoTaiKhoanToChuc": "100000000000000000000000000000000001",
+    "NgayMoTaiKhoan": "15/06/2025",
+    "TrangThaiTaiKhoan": 1,
+    "DiaChiMAC": "00-11-22-AA-BB-CC",
+    "SO_IMEI": "123450987654321"
+  },
+  {
+    "Cif": "111111111111111111111111111111111111",
+    "TenToChuc": "CÔNG TY CP ĐẦU TƯ A",
+    "SoGiayPhepThanhLap": "0102030001",
+    "LoaiGiayToThanhLapToChuc": 1,
+    "NgayThanhLap": "02/02/2020",
+    "DiaChiToChuc": "456 Nguyễn Huệ, Q.1, TP.HCM",
+    "HoTenNguoiDaiDien": "Trần Thị B",
+    "SoGiayToTuyThan": "012345678",
+    "LoaiGiayToTuyThan": 3,
+    "NgaySinh": "01/01/1980",
+    "GioiTinh": 0,
+    "QuocTich": "VN",
+    "DienThoai": "0909123456",
+    "SoTaiKhoanToChuc": "120000000000000000000000000000000001",
+    "NgayMoTaiKhoan": "15/06/2025",
+    "TrangThaiTaiKhoan": 1,
+    "DiaChiMAC": "00-11-22-AA-BB-CC",
+    "SO_IMEI": "123450987654321"
+  }
+]
+Response Headers: {
+  "Access-Control-Expose-Headers": "",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST",
+  "Vary": "Access-Control-Request-Headers, Access-Control-Request-Method, Origin",
+  "Access-Control-Allow-Headers": "authorization,Access-Control-Allow-Origin,Content-Type,SOAPAction,apikey,testKey,Authorization",
+  "Content-Type": "application/json",
+  "Date": "Fri, 16 May 2025 10:22:20 GMT",
+  "Transfer-Encoding": "chunked"
+}
+Response: {
+  "code": "00",
+  "message": "",
+  "success": true,
+  "result": "done"
+}
+------------------------------------------------------------

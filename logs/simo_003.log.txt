@@ -6,3 +6,41 @@ Response: {'code': '00', 'message': '', 'success': True, 'result': 'done'}
 Payload: [{'Cif': '123456789012345678901234567890123456', 'TenToChuc': 'Công ty TNHH XYZ', 'SoGiayPhepThanhLap': '987654321012345', 'SoTaiKhoanToChuc': '09876543210987654321', 'TrangThaiTaiKhoan': 4, 'NghiNgo': 2, 'LyDoCapNhat': 'Cập nhật trạng thái tài khoản do phát hiện hoạt động giao dịch bất thường.'}]
 Response: {'code': '00', 'message': '', 'success': True, 'result': 'done'}
 ------------------------------------------------------------
+[2025-05-16 17:22:04] ACTION: send
+Payload: [
+  {
+    "Cif": "111111111111111111111111111111111111",
+    "TenToChuc": "CÔNG TY CP ĐẦU TƯ A",
+    "SoGiayPhepThanhLap": "0102030001",
+    "SoTaiKhoanToChuc": "100000000000000000000000000000000001",
+    "TrangThaiTaiKhoan": 1,
+    "NghiNgo": 4,
+    "LyDoCapNhat": "Kiểm thử dữ liệu tổ chức A"
+  },
+  {
+    "Cif": "111111111111111111111111111111111111",
+    "TenToChuc": "CÔNG TY CP ĐẦU TƯ A",
+    "SoGiayPhepThanhLap": "0102030001",
+    "SoTaiKhoanToChuc": "120000000000000000000000000000000001",
+    "TrangThaiTaiKhoan": 1,
+    "NghiNgo": 4,
+    "LyDoCapNhat": "Kiểm thử dữ liệu tổ chức A"
+  }
+]
+Response Headers: {
+  "Access-Control-Expose-Headers": "",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST",
+  "Vary": "Access-Control-Request-Headers, Access-Control-Request-Method, Origin",
+  "Access-Control-Allow-Headers": "authorization,Access-Control-Allow-Origin,Content-Type,SOAPAction,apikey,testKey,Authorization",
+  "Content-Type": "application/json",
+  "Date": "Fri, 16 May 2025 10:22:17 GMT",
+  "Transfer-Encoding": "chunked"
+}
+Response: {
+  "code": "00",
+  "message": "",
+  "success": true,
+  "result": "done"
+}
+------------------------------------------------------------

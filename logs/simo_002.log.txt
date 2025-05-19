@@ -24,3 +24,39 @@ Payload: [
 ]
 Error: <am:fault xmlns:am="http://wso2.org/apimanager"><am:code>404</am:code><am:type>Status report</am:type><am:message>Runtime Error</am:message><am:description>No matching resource found for given API Request</am:description></am:fault>
 ------------------------------------------------------------
+[2025-05-16 17:22:02] ACTION: send
+Payload: [
+  {
+    "Cif": "111111111111111111111111111111111111",
+    "TenToChuc": "CÔNG TY CP ĐẦU TƯ A",
+    "SoGiayPhepThanhLap": "0102030001",
+    "SoTaiKhoanToChuc": "100000000000000000000000000000000001",
+    "TrangThaiTaiKhoan": 1,
+    "NghiNgo": 4
+  },
+  {
+    "Cif": "111111111111111111111111111111111111",
+    "TenToChuc": "CÔNG TY CP ĐẦU TƯ A",
+    "SoGiayPhepThanhLap": "0102030001",
+    "SoTaiKhoanToChuc": "120000000000000000000000000000000001",
+    "TrangThaiTaiKhoan": 1,
+    "NghiNgo": 4
+  }
+]
+Response Headers: {
+  "Access-Control-Expose-Headers": "",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST",
+  "Vary": "Access-Control-Request-Headers, Access-Control-Request-Method, Origin",
+  "Access-Control-Allow-Headers": "authorization,Access-Control-Allow-Origin,Content-Type,SOAPAction,apikey,testKey,Authorization",
+  "Content-Type": "application/json",
+  "Date": "Fri, 16 May 2025 10:22:14 GMT",
+  "Transfer-Encoding": "chunked"
+}
+Response: {
+  "code": "00",
+  "message": "",
+  "success": true,
+  "result": "done"
+}
+------------------------------------------------------------
